@@ -1,0 +1,37 @@
+name: Ask a question
+description: Ask for best-effort help using or understanding the project.
+title: "[Question]: "
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The maintainer provides an initial response within seven calendar days. Follow-up and resolution remain best effort.
+
+        Do not disclose security vulnerabilities, credentials, private repository details, or other sensitive information.
+
+  - type: textarea
+    id: goal
+    attributes:
+      label: What are you trying to do?
+      description: Describe your goal and the public project context needed to understand it.
+    validations:
+      required: true
+
+  - type: textarea
+    id: attempted
+    attributes:
+      label: What have you tried?
+      description: Include relevant commands, documentation, and sanitized output.
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Submission checks
+      options:
+        - label: I searched existing documentation and issues first.
+          required: true
+        - label: I removed credentials, private links, and sensitive data.
+          required: true

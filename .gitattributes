@@ -1,0 +1,2 @@
+# Keep vendored browser code out of GitHub language stats.
+web/vendor/** linguist-vendored=true

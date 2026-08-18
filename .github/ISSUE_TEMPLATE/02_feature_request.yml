@@ -1,0 +1,49 @@
+name: Request a feature
+description: Propose a software capability or project improvement.
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Describe the user problem before proposing a solution. Review `CONTRIBUTING.md` for changes that require prior discussion.
+
+        The maintainer provides an initial response within seven calendar days. Resolution remains best effort.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or opportunity
+      description: Who is affected, what are they trying to do, and what concrete workflow illustrates the need?
+    validations:
+      required: true
+
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Desired outcome
+      description: Describe the capability or result you would like without assuming a specific implementation.
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence and acceptance criteria
+      description: Describe how the change can be evaluated without weakening evidence, privacy, completeness, or publication guarantees.
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Describe current workarounds or other approaches you considered.
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Submission checks
+      options:
+        - label: I searched existing issues for a similar request.
+          required: true
+        - label: I reviewed the contribution scope in `CONTRIBUTING.md`.
+          required: true

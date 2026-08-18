@@ -1,0 +1,237 @@
+/* CUDA-X Developer Intelligence — dark mode */
+:root {
+  --bg: #0b0d0f;
+  --panel: #15181c;
+  --panel-2: #1c2025;
+  --border: #2a2f36;
+  --text: #e6e9ed;
+  --muted: #8b949e;
+  --nv: #76b900;            /* NVIDIA green */
+  --nv-dim: #5a8c00;
+  --new: #76b900;           /* "new since refresh" highlight */
+  --ai: #58a6ff;            /* AI overlay / badges */
+  --warn: #d29922;
+  --danger: #f85149;
+  --radius: 10px;
+  font-synthesis: none;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--bg); color: var(--text);
+  font: 14px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+a { color: var(--ai); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.wrap { max-width: 1200px; margin: 0 auto; padding: 24px 20px 80px; }
+header.top { border-bottom: 1px solid var(--border); margin-bottom: 22px; padding-bottom: 16px; }
+.top h1 { margin: 0 0 4px; font-size: 20px; letter-spacing: .2px; }
+.top h1 .accent { color: var(--nv); }
+.top .meta { color: var(--muted); font-size: 12.5px; display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+.top .meta b { color: var(--text); font-weight: 600; }
+.crumbs { font-size: 12.5px; color: var(--muted); margin-bottom: 14px; }
+
+.controls { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 18px; }
+.controls input[type="search"], .controls input[type="number"], .controls select {
+  background: var(--panel-2); color: var(--text); border: 1px solid var(--border);
+  border-radius: 7px; padding: 7px 10px; font-size: 13px; outline: none;
+}
+.controls input:focus, .controls select:focus { border-color: var(--nv-dim); }
+.controls label { font-size: 12.5px; color: var(--muted); display: inline-flex; gap: 6px; align-items: center; }
+
+/* library cards */
+/* grid-auto-rows: 1fr makes every row equal height (to the tallest card, e.g. NVPL's
+   2-line sub-line), so cards are uniform across rows; the flex-fill sparkline absorbs
+   the extra space in shorter cards. */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; grid-auto-rows: 1fr; }
+.card {
+  background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 16px; cursor: pointer; transition: border-color .15s, transform .05s; position: relative;
+  display: flex; flex-direction: column;   /* uniform layout: graph pinned to the bottom */
+}
+.card:hover { border-color: var(--nv-dim); transform: translateY(-1px); }
+.card.has-new { border-color: var(--new); box-shadow: 0 0 0 1px rgba(118,185,0,.25), 0 0 18px rgba(118,185,0,.08); }
+.card .name { font-size: 16px; font-weight: 650; }
+/* fixed 2-line height so every card's body starts at the same offset */
+.card .desc { color: var(--muted); font-size: 12px; margin: 4px 0 8px; height: 36px; overflow: hidden;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+/* always-present badge row (reserved even when empty) keeps the graph aligned */
+.card-badges { min-height: 20px; margin-top: 6px; display: flex; align-items: center; gap: 6px; }
+.card .big { font-size: 34px; font-weight: 700; line-height: 1; }
+.card .big small { font-size: 12px; color: var(--muted); font-weight: 400; margin-left: 6px; }
+.card .row { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; gap: 8px; }
+.card .stat { font-size: 12px; color: var(--muted); }
+.card .stat b { color: var(--text); }
+/* graph fills the card's lower area (taller than a fixed 34px) without growing the
+   card: flex-grows into available space, min 40px. Keeps the card footprint stable. */
+.spark { width: 100%; flex: 1 1 0; min-height: 40px; display: block; }
+
+.badge { display: inline-block; font-size: 11px; padding: 2px 7px; border-radius: 999px; border: 1px solid var(--border); color: var(--muted); white-space: nowrap; }
+.badge.up { color: var(--new); border-color: rgba(118,185,0,.4); background: rgba(118,185,0,.08); }
+.badge.down { color: var(--danger); border-color: rgba(248,81,73,.4); }
+.badge.flat { color: var(--muted); }
+.badge.tier { color: var(--nv); border-color: rgba(118,185,0,.35); }
+.badge.ai { color: var(--ai); border-color: rgba(88,166,255,.4); background: rgba(88,166,255,.08); }
+.badge.new { color: #0b0d0f; background: var(--new); border-color: var(--new); font-weight: 700; }
+.badge.warn { color: var(--warn); border-color: rgba(210,153,34,.4); }
+/* Reliable hover tooltip (replaces the flaky native title=) — any element with data-tip */
+[data-tip] { position: relative; cursor: help; }
+[data-tip]:hover::after {
+  content: attr(data-tip);
+  position: absolute; left: 0; bottom: calc(100% + 6px);
+  background: var(--panel-2); color: var(--text); border: 1px solid var(--border);
+  border-radius: 6px; padding: 6px 9px;
+  font: 400 11px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  white-space: normal; width: max-content; max-width: 260px;
+  z-index: 30; box-shadow: 0 6px 16px rgba(0,0,0,.45); pointer-events: none;
+}
+
+/* chart */
+#chart { width: 100%; height: 380px; background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 8px; }
+.section-h { font-size: 15px; font-weight: 650; margin: 26px 0 12px; }
+
+/* table */
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+th { color: var(--muted); font-weight: 600; cursor: pointer; user-select: none; white-space: nowrap; position: sticky; top: 0; background: var(--bg); }
+th .arrow { color: var(--nv); }
+tr.repo:hover td { background: var(--panel); }
+tr.repo.is-new td:first-child { box-shadow: inset 3px 0 0 var(--new); }
+td.num { text-align: right; font-variant-numeric: tabular-nums; }
+.repo-name { font-weight: 600; }
+.repo-desc { color: var(--muted); font-size: 12px; max-width: 360px; }
+.muted { color: var(--muted); }
+.pill { font-size: 11px; padding: 1px 6px; border: 1px solid var(--border); border-radius: 6px; color: var(--muted); margin-right: 4px; }
+
+.caveats { margin-top: 40px; padding: 14px 16px; background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); }
+.caveats h3 { margin: 0 0 8px; font-size: 13px; color: var(--warn); }
+.caveats ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: 12px; }
+.caveats li { margin: 4px 0; }
+.empty { color: var(--muted); padding: 30px; text-align: center; }
+.confidence-note { color: var(--warn); font-size: 11.5px; }
+
+/* ---- Phase-0 polish ---- */
+/* Landing brand header: bigger icon, title + "last refreshed" stacked to its right */
+header.top.brand { display: flex; align-items: center; gap: 16px; }
+.brand-logo { height: 56px; width: 56px; border-radius: 12px; object-fit: cover; flex: 0 0 auto; }
+.brand-text { display: flex; flex-direction: column; gap: 4px; }
+.brand-text h1 { margin: 0; }
+
+/* home-card sparkline x-axis: labels share the sparkline's real-time scale */
+.spark-axis { position: relative; height: 13px; font-size: 11px; margin-top: -2px; }
+.spark-axis span { position: absolute; transform: translateX(-50%); white-space: nowrap; }
+.spark-axis span:first-child { transform: none; }
+.spark-axis span:last-child { transform: translateX(-100%); }
+
+/* library "Adoption velocity" cards + subhead */
+.velocity-sub { font-size: 12px; margin: -4px 0 12px; }
+.takeaways { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 6px; }
+.tk-card { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; }
+.tk-card.tk-pending { border-style: dashed; }
+.tk-label { font-size: 12px; color: var(--muted); }
+.tk-num { font-size: 26px; font-weight: 700; line-height: 1.25; margin-top: 2px; }
+.tk-sub { font-size: 11px; margin-top: 2px; }
+.tk-num.tk-up { color: var(--new); } .tk-num.tk-down { color: var(--danger); } .tk-num.tk-flat { color: var(--text); }
+@media (max-width: 760px) { .takeaways { grid-template-columns: repeat(2, 1fr); } }
+
+/* green download buttons + customize dialog */
+.dl { float: right; font-size: 12px; font-weight: 400; color: var(--muted); }
+.dl-btn { display: inline-block; margin-left: 6px; padding: 3px 12px; border-radius: 7px;
+  background: var(--nv); color: #0b0d0f; font-weight: 600; font-size: 12px; border: 1px solid var(--nv); cursor: pointer; }
+.dl-btn:hover { background: #84c70a; text-decoration: none; }
+.dl-btn.ghost { background: transparent; color: var(--muted); border-color: var(--border); }
+.dl-btn.ghost:hover { background: var(--panel-2); }
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.6); display: flex; align-items: center; justify-content: center; z-index: 100; }
+.modal { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; width: min(520px, 92vw); box-shadow: 0 12px 40px rgba(0,0,0,.5); }
+.modal-h { font-size: 16px; font-weight: 650; margin-bottom: 14px; }
+.modal-row { display: flex; align-items: center; gap: 10px; margin: 10px 0; flex-wrap: wrap; }
+.modal-label { width: 76px; color: var(--muted); font-size: 12.5px; flex: 0 0 auto; }
+.modal-row label { font-size: 12.5px; display: inline-flex; gap: 5px; align-items: center; }
+.modal-row input[type="date"] { background: var(--panel-2); color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 5px 8px; }
+.dl-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 14px; }
+.modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; }
+
+/* commit-link date cell + operator expand */
+.commit-link { color: var(--ai); white-space: nowrap; }
+.ops-cell { font-size: 12px; }
+.ops-toggle { font-size: 11px; color: var(--ai); cursor: pointer; white-space: nowrap; }
+td.nowrap, .nowrap { white-space: nowrap; }
+
+/* condense repo table: shrink the short middle columns so Repository isn't over-wide */
+#repos th:nth-child(2), #repos td:nth-child(2),
+#repos th:nth-child(3), #repos td:nth-child(3),
+#repos th:nth-child(4), #repos td:nth-child(4),
+#repos th:nth-child(5), #repos td:nth-child(5),
+#repos th:nth-child(6), #repos td:nth-child(6) { width: 1%; white-space: nowrap; }
+#repos td:nth-child(1) { max-width: 380px; }
+
+/* library counts moved beside the "Adoption over time" title */
+.section-h .lib-counts { font-weight: 400; font-size: 13px; color: var(--muted); margin-left: 10px; }
+.section-h .lib-counts b { color: var(--text); }
+.lib-counts .sep { opacity: .55; margin: 0 4px; }
+
+/* ---- REQ-07: browser-style view tabs (GitHub adoption / Research citations) ---- */
+.view-tabs { display: flex; gap: 4px; margin: 20px 0 0; border-bottom: 1px solid var(--border); }
+.tab-btn {
+  background: transparent; color: var(--muted); border: 1px solid transparent; border-bottom: none;
+  border-radius: 9px 9px 0 0; padding: 9px 18px; font-size: 13.5px; font-weight: 600; cursor: pointer;
+  margin-bottom: -1px; transition: color .15s, background .15s;
+}
+.tab-btn:hover { color: var(--text); background: var(--panel-2); }
+.tab-btn.active {
+  color: var(--nv); background: var(--panel);
+  border-color: var(--border); border-bottom: 1px solid var(--panel);
+}
+#view-adoption, #view-citations { padding-top: 4px; }
+
+#cit-chart { width: 100%; height: 380px; background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 8px; }
+
+/* paper icon on an adoption-table repo row (links to its research paper) */
+.paper-icon { text-decoration: none; font-size: 12px; opacity: .85; }
+.paper-icon:hover { opacity: 1; text-decoration: none; }
+/* jump-to-adoption link inside the papers table's Code column */
+.jump-btn { font-size: 11px; color: var(--ai); white-space: nowrap; margin-left: 6px; }
+/* flash the target repo row when jumped-to from a paper */
+tr.flash td { animation: flashrow 2.2s ease-out; }
+@keyframes flashrow { 0%, 40% { background: rgba(118,185,0,.22); } 100% { background: transparent; } }
+
+/* papers table: title column dominant, numeric cols tight */
+#papers td:nth-child(1) { max-width: 520px; }
+#papers th:nth-child(2), #papers td:nth-child(2),
+#papers th:nth-child(4), #papers td:nth-child(4) { width: 1%; white-space: nowrap; }
+
+/* Component sub-library cards (parent library page, e.g. NVPL BLAS/FFT/…) */
+.components-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-bottom: 8px; }
+.comp-card { display: block; background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 12px 13px; text-decoration: none; color: var(--text); transition: border-color .12s, transform .12s; }
+.comp-card:hover { border-color: var(--nv-dim); transform: translateY(-1px); }
+.comp-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.comp-name { font-size: 14px; font-weight: 650; }
+.comp-big { font-size: 26px; font-weight: 700; line-height: 1.1; margin: 6px 0 2px; }
+.comp-big small { font-size: 11px; color: var(--muted); font-weight: 400; margin-left: 5px; }
+
+/* Temporary, one-time data coverage notice. */
+body.coverage-notice-open { overflow: hidden; }
+.coverage-notice-overlay {
+  position: fixed; inset: 0; z-index: 200; display: flex; align-items: center; justify-content: center;
+  padding: 20px; background: rgba(0,0,0,.7); backdrop-filter: blur(2px);
+}
+.coverage-notice {
+  position: relative; width: min(590px, 100%); padding: 24px 54px 24px 26px;
+  background: var(--panel); border: 1px solid rgba(210,153,34,.55); border-left: 4px solid var(--warn);
+  border-radius: var(--radius); box-shadow: 0 18px 60px rgba(0,0,0,.62);
+}
+.coverage-notice h2 { margin: 0 0 10px; color: var(--warn); font-size: 18px; }
+.coverage-notice p { margin: 0; color: var(--text); }
+.coverage-notice .coverage-notice-timing { margin-top: 12px; color: var(--muted); font-size: 13px; }
+.coverage-notice-close {
+  position: absolute; top: 10px; right: 12px; width: 34px; height: 34px; padding: 0;
+  display: grid; place-items: center; background: transparent; color: var(--muted);
+  border: 1px solid transparent; border-radius: 7px; font: 26px/1 Arial, sans-serif; cursor: pointer;
+}
+.coverage-notice-close:hover { color: var(--text); background: var(--panel-2); border-color: var(--border); }
+.coverage-notice-close:focus-visible { outline: 2px solid var(--nv); outline-offset: 2px; }
+@media (max-width: 520px) {
+  .coverage-notice { padding: 22px 48px 22px 20px; }
+}

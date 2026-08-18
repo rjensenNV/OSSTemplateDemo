@@ -1,0 +1,758 @@
+{
+  "schema_version": 1,
+  "contract_id": "req14-phase8-precollection-v3-2026-07-28",
+  "reviewed_on": "2026-07-28",
+  "scope": {
+    "discovery": "Every header, import, package, token, and build hit is only a candidate anchor. Discovery never classifies a repository.",
+    "confirmed": "Only an uncommented exact SDK include in host-owned C/C++/CUDA source, or an executable non-shadowed import in host-owned Python/notebook code, is sufficient. Warp and Morpheus additionally require a product-specific API anchor.",
+    "bundled": "Evaluated only for reviewed Python distribution declarations in supported authored dependency manifests; otherwise not_evaluated.",
+    "targeted": "Evaluated only for reviewed official CMake/link targets in authored CMake configuration; otherwise not_evaluated.",
+    "framework_transitive": "deferred",
+    "excluded_libraries": ["cuda-compute", "cuda-parallel"],
+    "operators": "not_evaluated for REQ-14 direct candidates; mature DALI and mature component extractors are unchanged",
+    "global_exclusions": [
+      "private, forked, archived, or unresolved-visibility repository",
+      "NVIDIA-owned product/source repository",
+      "vendor, third_party, generated, environment, documentation, or agent-skill path",
+      "embedded/copied upstream project root",
+      "comment, string, notebook markdown/output, malformed notebook, or non-source occurrence",
+      "project-owned local header definition or Python module/package shadow"
+    ]
+  },
+  "negative_profiles": {
+    "cpp_exact": [
+      "commented or string-shaped include",
+      "near-name or backup-suffix header",
+      "tracked local definition/self-header",
+      "vendor/generated/environment/copied-project path"
+    ],
+    "cpp_prefix": [
+      "commented or non-header prefix occurrence",
+      "tracked SDK implementation/header tree",
+      "vendor/generated/environment/copied-project path"
+    ],
+    "python_import": [
+      "comment, docstring, markdown, notebook output, or prose occurrence",
+      "near-name import and project-local module/package shadow",
+      "vendor/generated/environment/copied-project path"
+    ],
+    "python_import_api": [
+      "all python_import negatives",
+      "bare product import without a reviewed product API anchor"
+    ],
+    "dual_surface": [
+      "all cpp_exact and python_import negatives",
+      "one valid surface is sufficient; evidence remains attached to that surface"
+    ]
+  },
+  "band_certifications": {
+    "bundled": {
+      "published_label": "Declared",
+      "method": "An exact PEP 503-normalized official distribution name must occur as a structurally parsed dependency in an authored requirements file, pyproject.toml, setup.py, setup.cfg, environment YAML, Pipfile, or Docker pip-install command. Confirmed direct use takes precedence.",
+      "supported_surfaces": ["requirements*.txt", "requirements*.in", "pyproject.toml", "setup.py", "setup.cfg", "environment.yml", "environment.yaml", "Pipfile", "Dockerfile*"],
+      "hard_negatives": ["comment or prose-only package name", "substring or near-name distribution", "invalid pip-list two-column text", "requirements include/constraint directive", "setup extra/group key rather than dependency value", "environment channel rather than dependency", "Docker option value rather than install operand", "vendor, generated, environment-dump, agent-skill, or embedded-project path", "malformed evidence-bearing manifest fails the repository instead of publishing a clean negative"],
+      "component_operator_handling": "A declaration proves only the library-level band. It never infers operators, components, frameworks, or transitive attribution.",
+      "libraries": {
+        "cuequivariance": {
+          "qualifying_signals": ["cuequivariance", "cuequivariance-torch", "cuequivariance-jax"],
+          "official_references": ["https://pypi.org/project/cuequivariance/", "https://pypi.org/project/cuequivariance-torch/", "https://pypi.org/project/cuequivariance-jax/"],
+          "public_positive": {"repository": "aws-samples/drug-discovery-workflows", "commit": "8d27f43da13d8972ae9cdac9cf79616a414bceef", "path": "assets/containers/boltz/requirements.txt", "signal": "cuequivariance_torch>=0.5.0"}
+        },
+        "warp": {
+          "qualifying_signals": ["warp-lang"],
+          "official_references": ["https://pypi.org/project/warp-lang/", "https://nvidia.github.io/warp/"],
+          "public_positive": {"repository": "google-deepmind/mujoco", "commit": "56a182e67c946dc146929b0e3b1f70f4f92325cf", "path": "mjx/cuda_requirements.txt", "signal": "warp-lang==1.14.0"}
+        },
+        "physicsnemo": {
+          "qualifying_signals": ["nvidia-physicsnemo"],
+          "official_references": ["https://pypi.org/project/nvidia-physicsnemo/", "https://docs.nvidia.com/physicsnemo/latest/getting-started/installation.html"],
+          "public_positive": {"repository": "Project-MONAI/physiotwin4d", "commit": "7275e003ceb7fff23f5090cbf207b4be40fac6e2", "path": "pyproject.toml", "signal": "nvidia-physicsnemo>=2.0.0"}
+        },
+        "cudaq-qec": {
+          "qualifying_signals": ["cudaq-qec"],
+          "official_references": ["https://pypi.org/project/cudaq-qec/", "https://nvidia.github.io/cudaqx/components/qec/introduction.html"],
+          "public_positive": {"repository": "NERSC/SC25-quantum-tutorial", "commit": "f0c3073168fceb74f1d40afeb023317e0bab920f", "path": "Hour3/requirements.txt", "signal": "cudaq-qec~=0.4.0"}
+        },
+        "cudaq-solvers": {
+          "qualifying_signals": ["cudaq-solvers"],
+          "official_references": ["https://pypi.org/project/cudaq-solvers/", "https://nvidia.github.io/cudaqx/components/solvers/introduction.html"],
+          "public_positive": {"repository": "NERSC/SC25-quantum-tutorial", "commit": "f0c3073168fceb74f1d40afeb023317e0bab920f", "path": "Hour3/requirements.txt", "signal": "cudaq-solvers~=0.4.0"}
+        },
+        "tensorrt": {
+          "qualifying_signals": ["tensorrt"],
+          "official_references": ["https://pypi.org/project/tensorrt/", "https://docs.nvidia.com/deeplearning/tensorrt/latest/installing-tensorrt/installing.html"],
+          "public_positive": {"repository": "MIT-SPARK/DAAAM", "commit": "589216fdcf7c0a7bd1f84a1babea5d05eed9f391", "path": "requirements.txt", "signal": "tensorrt"}
+        },
+        "tensorrt-llm": {
+          "qualifying_signals": ["tensorrt-llm"],
+          "official_references": ["https://pypi.org/project/tensorrt-llm/", "https://github.com/NVIDIA/TensorRT-LLM"],
+          "public_positive": {"repository": "k2-fsa/sherpa", "commit": "0a3288623d375100e1a249ea6fe12970d259a448", "path": "triton/whisper/requirements.txt", "signal": "tensorrt-llm==0.15.0.dev2024101500"}
+        },
+        "flashinfer": {
+          "qualifying_signals": ["flashinfer-python"],
+          "official_references": ["https://pypi.org/project/flashinfer-python/", "https://docs.flashinfer.ai/installation.html"],
+          "public_positive": {"repository": "mlc-ai/mlc-llm", "commit": "76cd196a2c01520d06b41e2139d16f347720f921", "path": "python/requirements.txt", "signal": "flashinfer-python; sys_platform == \"linux\""}
+        },
+        "cudf": {
+          "qualifying_signals": ["cudf-cu12", "cudf-cu13"],
+          "official_references": ["https://pypi.org/project/cudf-cu12/", "https://pypi.org/project/cudf-cu13/"],
+          "public_positive": {"repository": "lifuguan/IGGT_official", "commit": "50c29c2d19e339db1ae1a475d07fcf283126af72", "path": "requirements.txt", "signal": "cudf-cu12==25.6.0"}
+        },
+        "cuvs": {
+          "qualifying_signals": ["cuvs-cu12", "cuvs-cu13"],
+          "official_references": ["https://pypi.org/project/cuvs-cu12/", "https://pypi.org/project/cuvs-cu13/"],
+          "public_positive": {"repository": "lifuguan/IGGT_official", "commit": "50c29c2d19e339db1ae1a475d07fcf283126af72", "path": "requirements.txt", "signal": "cuvs-cu12==25.6.1"}
+        },
+        "cuml": {
+          "qualifying_signals": ["cuml-cu12", "cuml-cu13"],
+          "official_references": ["https://pypi.org/project/cuml-cu12/", "https://pypi.org/project/cuml-cu13/"],
+          "public_positive": {"repository": "lifuguan/IGGT_official", "commit": "50c29c2d19e339db1ae1a475d07fcf283126af72", "path": "requirements.txt", "signal": "cuml-cu12==25.6.0"}
+        },
+        "cuopt": {
+          "qualifying_signals": ["cuopt-cu12", "cuopt-cu13"],
+          "official_references": ["https://pypi.org/project/cuopt-cu12/", "https://pypi.org/project/cuopt-cu13/"],
+          "public_positive": {"repository": "herbertskyper/NeuTracer", "commit": "5aecfa71d042858678a2bbaa150fa4d556b4c739", "path": "requirements.txt", "signal": "cuopt-cu12==25.5.1"}
+        },
+        "cugraph": {
+          "qualifying_signals": ["cugraph-cu12", "cugraph-cu13"],
+          "official_references": ["https://pypi.org/project/cugraph-cu12/", "https://pypi.org/project/cugraph-cu13/"],
+          "public_positive": {"repository": "graphistry/pygraphistry", "commit": "4daf2cc692f52607d3e94d65f3f3f6427e6fdb10", "path": "setup.py", "signal": "cugraph-cu12==24.12.*"}
+        },
+        "nemo-curator": {
+          "qualifying_signals": ["nemo-curator"],
+          "official_references": ["https://pypi.org/project/nemo-curator/", "https://docs.nvidia.com/nemo/curator/get-started/installation"],
+          "public_positive": {"repository": "DDNStorage/fsi-pipeline", "commit": "a5dd482a479b0f4b60a1063a2e8e21884f61c2d0", "path": "services/intelligence/semantic-chunking-nemo-curator/requirements.txt", "signal": "nemo-curator==0.4.0"}
+        },
+        "nvimagecodec": {
+          "qualifying_signals": ["nvidia-nvimgcodec-cu12", "nvidia-nvimgcodec-cu13"],
+          "official_references": ["https://pypi.org/project/nvidia-nvimgcodec-cu12/", "https://pypi.org/project/nvidia-nvimgcodec-cu13/", "https://docs.nvidia.com/cuda/nvimagecodec/installation.html"],
+          "public_positive": {"repository": "basetenlabs/truss-examples", "commit": "7fb93eaa88c4fa032e2b57c347d374babd718cc6", "path": "flux.1-dev-trt-b200/requirements.txt", "signal": "nvidia-nvimgcodec-cu12==0.5.0.13"}
+        },
+        "cvcuda": {
+          "qualifying_signals": ["cvcuda-cu12", "cvcuda-cu13"],
+          "official_references": ["https://pypi.org/project/cvcuda-cu12/", "https://pypi.org/project/cvcuda-cu13/", "https://cvcuda.github.io/CV-CUDA/installation.html"],
+          "public_positive": {"repository": "Tengpaz/WorldRenderer", "commit": "9f4317ceb82ec2d6589adf43055f85ac20a4b413", "path": "requirements.txt", "signal": "cvcuda-cu12==0.16.0"}
+        },
+        "cucim": {
+          "qualifying_signals": ["cucim-cu12", "cucim-cu13"],
+          "official_references": ["https://pypi.org/project/cucim-cu12/", "https://pypi.org/project/cucim-cu13/", "https://docs.rapids.ai/api/cucim/stable/"],
+          "public_positive": {"repository": "bpi-oxford/lymphnode_analysis", "commit": "886115e115ab6417c7cb1f00f94bf92f1cf508bd", "path": "pip_requirements.txt", "signal": "cucim-cu12==25.8.0"}
+        },
+        "nixl": {
+          "qualifying_signals": ["nixl"],
+          "official_references": ["https://pypi.org/project/nixl/", "https://github.com/ai-dynamo/nixl"],
+          "public_positive": {"repository": "ray-project/ray", "commit": "89751b697a3bba1bf63559d75c91f09d08189c26", "path": "python/requirements/llm/llm-requirements.txt", "signal": "nixl==1.3.1"}
+        },
+        "nvcomp": {
+          "qualifying_signals": ["nvidia-nvcomp-cu12", "nvidia-nvcomp-cu13"],
+          "official_references": ["https://docs.nvidia.com/cuda/nvcomp/installation.html", "https://docs.nvidia.com/cuda/nvcomp/py_api.html"],
+          "public_positive": {"repository": "scikit-hep/uproot5", "commit": "ad82290a7d552b64da439e6475c6717f65539fd5", "path": "pyproject.toml", "signal": "nvidia-nvcomp-cu12 / nvidia-nvcomp-cu13"}
+        }
+      }
+    },
+    "targeted": {
+      "method": "An exact reviewed official imported target or canonical product linker library must occur in an authored CMake link/find command, TARGET condition, or link-library variable assignment. Confirmed and declared/bundled evidence take precedence.",
+      "supported_surfaces": ["CMakeLists.txt", "*.cmake"],
+      "discovery_note": "Short family roots nominate candidates; classification rechecks the full exact allowlist below in CMake syntax.",
+      "official_references": ["https://cmake.org/cmake/help/latest/module/FindCUDAToolkit.html", "https://docs.nvidia.com/deeplearning/tensorrt/latest/", "https://docs.nvidia.com/cuda/cudss/getting_started.html", "https://docs.nvidia.com/cuda/cusparselt/getting_started.html", "https://github.com/NVIDIA/CUDALibrarySamples", "https://github.com/NVIDIA/nvcomp/blob/v3.0.1/cmake/nvcomp-config.cmake.in"],
+      "hard_negatives": ["comment including bracket-comment variants", "message/prose string", "wrong-case, near-name, or unsupported CUDAToolkit:: pseudo-target", "unrelated variable assignment", "vendor, generated, environment-dump, or embedded-project path", "bare product token outside reviewed CMake commands"],
+      "component_operator_handling": "A link target proves only the named library-level band. NPP component targets remain evidence for NPP but do not publish operators; cuBLASLt remains its own rollup child.",
+      "libraries": {
+        "cublas": {
+          "qualifying_signals": ["CUDA::cublas", "CUDA::cublas_static"],
+          "public_positive": {"repository": "davisking/dlib", "commit": "de23db42df8684be737356d76f3fd405b96ba98f", "path": "dlib/CMakeLists.txt", "signal": "list(APPEND dlib_needed_private_libraries CUDA::cublas)"}
+        },
+        "cublaslt": {
+          "qualifying_signals": ["CUDA::cublasLt", "CUDA::cublasLt_static"],
+          "public_positive": {"repository": "opencv/opencv", "commit": "8efc0fd47be47730a2c13c571b2ee450a9b74c80", "path": "modules/dnn/CMakeLists.txt", "signal": "list(APPEND libs CUDA::cublasLt${CUDA_LIB_EXT})"}
+        },
+        "cublasmp": {
+          "qualifying_signals": ["cublasmp", "-lcublasmp"],
+          "public_positive": {"repository": "bvrettos/Distributed-GEMM-Thesis", "commit": "fcac679a90348011a67a5d943656c8228e2acdad", "path": "CMakeLists.txt", "signal": "set(CUBLASMP_LINK \"-L${CUBLASMP_LD} -lcublasmp\")"}
+        },
+        "cufft": {
+          "qualifying_signals": ["CUDA::cufft", "CUDA::cufftw", "CUDA::cufft_static", "CUDA::cufft_static_nocallback", "CUDA::cufftw_static"],
+          "public_positive": {"repository": "openmm/openmm", "commit": "68c97c5bfcb81fcb2b39171e36396aa76a14bd35", "path": "platforms/cuda/sharedTarget/CMakeLists.txt", "signal": "TARGET_LINK_LIBRARIES(... CUDA::cufft ...)"}
+        },
+        "cufftmp": {
+          "qualifying_signals": ["cufftMp"],
+          "public_positive": {"repository": "gromacs/gromacs", "commit": "1d9274f7b2b94be5b1ac48d421c81e9464011036", "path": "cmake/FindcuFFTMp.cmake", "signal": "find_library(cuFFTMp_LIBRARY NAMES cufftMp ...)"}
+        },
+        "curand": {
+          "qualifying_signals": ["CUDA::curand", "CUDA::curand_static"],
+          "public_positive": {"repository": "davisking/dlib", "commit": "de23db42df8684be737356d76f3fd405b96ba98f", "path": "dlib/CMakeLists.txt", "signal": "list(APPEND dlib_needed_private_libraries CUDA::curand)"}
+        },
+        "cusolver": {
+          "qualifying_signals": ["CUDA::cusolver", "CUDA::cusolver_static"],
+          "public_positive": {"repository": "ceres-solver/ceres-solver", "commit": "f9b7b6651b108136a16df44d91fb31735645f5a7", "path": "CMakeLists.txt", "signal": "CUDA::cusolver${CERES_CUDA_TARGET_SUFFIX}"}
+        },
+        "cusolvermp": {
+          "qualifying_signals": ["cusolverMp"],
+          "public_positive": {"repository": "uestc-ndsl-hpc/distQR", "commit": "c9a8951e3802879f290dd9efd33fe606e18c2f20", "path": "bench/CMakeLists.txt", "signal": "find_library(CUSOLVERMP_LIBRARY NAMES cusolverMp ...)"}
+        },
+        "cusparse": {
+          "qualifying_signals": ["CUDA::cusparse", "CUDA::cusparse_static"],
+          "public_positive": {"repository": "osqp/osqp", "commit": "c8db60c93a3a5aaeea9b71953aecea7ff9dde971", "path": "algebra/cuda/CMakeLists.txt", "signal": "target_link_libraries(OSQPLIB ... CUDA::cusparse_static ...)"}
+        },
+        "cutensor": {
+          "qualifying_signals": ["cutensor"],
+          "public_positive": {"repository": "correaa/boost-multi", "commit": "dcd664730e7729d04a0c5311f2e4bcb380cebd7f", "path": "include/boost/multi/adaptors/cutensor/cmake/FindcuTENSOR.cmake", "signal": "find_library(cuTENSOR_LIBRARY NAMES cutensor ...)"}
+        },
+        "cudss": {
+          "qualifying_signals": ["cudss", "cudss_static"],
+          "public_positive": {"repository": "owensgroup/RXMesh", "commit": "1eb557e2f8eda5a83d00069eba6e2f3b34461116", "path": "cmake/cuDSS.cmake", "signal": "target_link_libraries(... cudss / cudss_static)"}
+        },
+        "gds": {
+          "qualifying_signals": ["CUDA::cuFile", "CUDA::cuFile_static", "CUDA::cuFile_rdma", "CUDA::cuFile_rdma_static"],
+          "public_positive": {"repository": "IST-DASLab/llmq", "commit": "b401ef1c997d4dd6f2e5ad142eb203bd36549b81", "path": "CMakeLists.txt", "signal": "if(TARGET CUDA::cuFile) + set(CUFILE_LIBS CUDA::cuFile)"}
+        },
+        "npp": {
+          "qualifying_signals": ["CUDA::nppc", "CUDA::nppc_static", "CUDA::nppial", "CUDA::nppial_static", "CUDA::nppicc", "CUDA::nppicc_static", "CUDA::nppicom", "CUDA::nppicom_static", "CUDA::nppidei", "CUDA::nppidei_static", "CUDA::nppif", "CUDA::nppif_static", "CUDA::nppig", "CUDA::nppig_static", "CUDA::nppim", "CUDA::nppim_static", "CUDA::nppist", "CUDA::nppist_static", "CUDA::nppisu", "CUDA::nppisu_static", "CUDA::nppitc", "CUDA::nppitc_static", "CUDA::npps", "CUDA::npps_static"],
+          "public_positive": {"repository": "PointCloudLibrary/pcl", "commit": "13d437bf04ccc4716545582a1c191eb8161a2b0a", "path": "gpu/people/CMakeLists.txt", "signal": "set(CUDA_npp_LIBRARY CUDA::nppc CUDA::nppim CUDA::nppidei CUDA::npps)"}
+        },
+        "nvcomp": {
+          "qualifying_signals": ["nvcomp::nvcomp"],
+          "public_positive": {"repository": "dmlc/xgboost", "commit": "9b74c38e8c0dc66046a738241aa14dd29f862b26", "path": "cmake/Utils.cmake", "signal": "target_link_libraries(... nvcomp::nvcomp)"}
+        },
+        "tensorrt": {
+          "qualifying_signals": ["nvinfer", "nvinfer_plugin"],
+          "public_positive": {"repository": "jolibrain/deepdetect", "commit": "a29806af16c487db7374d13864bc67f8b8217d7f", "path": "CMakeLists.txt", "signal": "find_library(TENSORRT_NVINFER_LIB NAMES nvinfer ...)"}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "cublas": {
+      "status": "enabled",
+      "bands": {"confirmed": "evaluated", "bundled": "not_evaluated", "targeted": "evaluated"},
+      "discovery_anchors": ["cublas.h", "cublas_v2.h", "cublas"],
+      "qualifying_signals": ["own-source exact include: cublas.h", "own-source exact include: cublas_v2.h"],
+      "official_reference": "https://docs.nvidia.com/cuda/cublas/index.html",
+      "public_positive": {"repository": "hgpvision/darknet", "commit": "6b90daea920e388d4ba3db7b75062a47a61fb001", "path": "src/cuda.h", "signal": "cublas_v2.h"},
+      "negative_profile": "cpp_exact",
+      "collision_notes": [],
+      "enrichment": {"rollup_to": null, "operators": "not_evaluated"},
+      "blockers": []
+    },
+    "cublaslt": {
+      "status": "enabled",
+      "bands": {"confirmed": "evaluated", "bundled": "not_evaluated", "targeted": "evaluated"},
+      "discovery_anchors": ["cublasLt.h", "cublasLt"],
+      "qualifying_signals": ["own-source exact include: cublasLt.h"],
+      "official_reference": "https://docs.nvidia.com/cuda/cublas/index.html#using-the-cublaslt-api",
+      "public_positive": {"repository": "starpu-runtime/starpu", "commit": "df18cbfe534fa8dae32356541f18e69ea37360e7", "path": "include/starpu_cublasLt.h", "signal": "cublasLt.h"},
+      "negative_profile": "cpp_exact",
+      "collision_notes": ["A project-owned cublasLt.h wrapper is insufficient unless that wrapper itself includes the external SDK header."],
+      "enrichment": {"rollup_to": "cublas", "operators": "not_evaluated"},
+      "blockers": []
+    },
+    "cublasxt": {
+      "status": "enabled",
+      "bands": {"confirmed": "evaluated", "bundled": "not_evaluated", "targeted": "not_evaluated"},
+      "discovery_anchors": ["cublasXt.h", "cublasXt"],
+      "qualifying_signals": ["own-source exact include: cublasXt.h"],
+      "official_reference": "https://docs.nvidia.com/cuda/cublas/index.html#using-the-cublasxt-api",
+      "public_positive": {"repository": "Rust-GPU/rust-cuda", "commit": "103a8d56935c4e0885ff7c3d25402319df1a8e00", "path": "crates/cust_raw/build/cublasXt_wrapper.h", "signal": "cublasXt.h"},
+      "negative_profile": "cpp_exact",
+      "collision_notes": ["An authored build wrapper is host source; a generated build output remains excluded."],
+      "enrichment": {"rollup_to": "cublas", "operators": "not_evaluated"},
+      "blockers": []
+    },
+    "cublasmp": {
+      "status": "enabled",
+      "bands": {"confirmed": "evaluated", "bundled": "not_evaluated", "targeted": "evaluated"},
+      "discovery_anchors": ["cublasmp.h", "cublasMp.h", "cublasMp"],
+      "qualifying_signals": ["own-source exact include, case-insensitive basename: cublasmp.h or cublasMp.h"],
+      "official_reference": "https://docs.nvidia.com/cuda/cublasmp/usage/functions.html",
+      "public_positive": {"repository": "bvrettos/Distributed-GEMM-Thesis", "commit": "fcac679a90348011a67a5d943656c8228e2acdad", "path": "include/cuBLASMpWrapped.hpp", "signal": "cublasmp.h"},
+      "negative_profile": "cpp_exact",
+      "collision_notes": ["ROCm/TransformerEngine and copied TransformerEngine benchmark trees are upstream derivatives, not independent host adoption.", "Copied CUDALibrarySamples trees are sample redistribution, not adoption."],
+      "enrichment": {"rollup_to": "cublas", "operators": "not_evaluated"},
+      "blockers": []
+    },
+    "cufft": {
+      "status": "enabled",
+      "bands": {"confirmed": "evaluated", "bundled": "not_evaluated", "targeted": "evaluated"},
+      "discovery_anchors": ["cufft.h", "cufft"],
+      "qualifying_signals": ["own-source exact include: cufft.h"],
+      "official_reference": "https://docs.nvidia.com/cuda/cufft/index.html",
+      "public_positive": {"repository": "nerscadmin/IPM", "commit": "02f0cdce630f0533e0aaadaccd8998a5e893968a", "path": "include/mod_cufft.h", "signal": "cufft.h"},
+      "negative_profile": "cpp_exact",
+      "collision_notes": [],
+      "enrichment": {"rollup_to": null, "operators": "not_evaluated"},
+      "blockers": []
+    },
+    "cufftxt": {
+      "status": "enabled",
+      "bands": {"confirmed": "evaluated", "bundled": "not_evaluated", "targeted": "not_evaluated"},
+      "discovery_anchors": ["cufftXt.h", "cufftXt"],
+      "qualifying_signals": ["own-source exact include: cufftXt.h"],
+      "official_reference": "https://docs.nvidia.com/cuda/cufft/index.html#xt-api",
+      "public_positive": {"repository": "microsoft/onnxruntime", "commit": "47faa11b035d53c49f3f93e815d004e616d360ca", "path": "onnxruntime/core/providers/cuda/cufft_stub.cc", "signal": "cufftXt.h"},
+      "negative_profile": "cpp_exact",
+      "collision_notes": ["Copied cufftXt.h definitions are local SDK copies and do not qualify."],
+      "enrichment": {"rollup_to": "cufft", "operators": "not_evaluated"},
+      "blockers": []
+    },
+    "cufftmp": {
+      "status": "enabled",
+      "bands": {"confirmed": "evaluated", "bundled": "not_evaluated", "targeted": "evaluated"},
+      "discovery_anchors": ["cufftMp.h", "cufftMp"],
+      "qualifying_signals": ["own-source exact include: cufftMp.h"],
+      "official_reference": "https://docs.nvidia.com/cuda/cufftmp/api/index.html",
+      "public_positive": {"repository": "IPPL-framework/ippl", "commit": "42d90a39abb0658e9dd4b2b030153d0c76d4e97d", "path": "src/FFT/Backend/CuFFTMp.h", "signal": "cufftMp.h"},
+      "negative_profile": "cpp_exact",
+      "collision_notes": ["HITS-MCM/gromacs-ramd is a reviewed copied repository and remains excluded."],
+      "enrichment": {"rollup_to": "cufft", "operators": "not_evaluated"},
+      "blockers": []
+    },
+    "curand": {
+      "status": "enabled",
+      "bands": {"confirmed": "evaluated", "bundled": "not_evaluated", "targeted": "evaluated"},
+      "discovery_anchors": ["curand.h", "curand_kernel.h", "curand"],
+      "qualifying_signals": ["own-source exact include: curand.h", "own-source exact include: curand_kernel.h"],
+      "official_reference": "https://docs.nvidia.com/cuda/curand/index.html",
+      "public_positive": {"repository": "hgpvision/darknet", "commit": "6b90daea920e388d4ba3db7b75062a47a61fb001", "path": "src/cuda.h", "signal": "curand.h"},
+      "negative_profile": "cpp_exact",
+      "collision_notes": [],
+      "enrichment": {"rollup_to": null, "operators": "not_evaluated"},
+      "blockers": []
+    },
+    "cusolver": {
+      "status": "enabled",
+      "bands": {"confirmed": "evaluated", "bundled": "not_evaluated", "targeted": "evaluated"},
+      "discovery_anchors": ["cusolverDn.h", "cusolverSp.h", "cusolverRf.h", "cusolverMg.h", "cusolver"],
+      "qualifying_signals": ["own-source exact include: cusolverDn.h", "own-source exact include: cusolverSp.h", "own-source exact include: cusolverRf.h", "own-source exact include: cusolverMg.h"],
+      "official_reference": "https://docs.nvidia.com/cuda/cusolver/index.html",
+      "public_positive": {"repository": "arrayfire/arrayfire", "commit": "492718b5a256d4a9d5198fdce89d8fd21772bfda", "path": "src/backend/cuda/cusolverDn.hpp", "signal": "cusolverDn.h"},
+      "negative_profile": "cpp_exact",
+      "collision_notes": [],
+      "enrichment": {"rollup_to": null, "operators": "not_evaluated"},
+      "blockers": []
+    },
+    "cusolvermp": {
+      "status": "enabled",
+      "bands": {"confirmed": "evaluated", "bundled": "not_evaluated", "targeted": "evaluated"},
+      "discovery_anchors": ["cusolverMp.h", "cusolverMp"],
+      "qualifying_signals": ["own-source exact include: cusolverMp.h"],
+      "official_reference": "https://docs.nvidia.com/cuda/cusolvermp/usage/functions.html",
+      "public_positive": {"repository": "cp2k/cp2k", "commit": "9cbee8b47c1da0f8cb9f698eee35879e16dacdd6", "path": "src/fm/cp_fm_cusolver.c", "signal": "cusolverMp.h"},
+      "negative_profile": "cpp_exact",
+      "collision_notes": ["Documentation and FindCuSolverMP.cmake alone are discovery anchors, never confirmed evidence."],
+      "enrichment": {"rollup_to": "cusolver", "operators": "not_evaluated"},
+      "blockers": []
+    },
+    "cusparse": {
+      "status": "enabled",
+      "bands": {"confirmed": "evaluated", "bundled": "not_evaluated", "targeted": "evaluated"},
+      "discovery_anchors": ["cusparse.h", "cusparse"],
+      "qualifying_signals": ["own-source exact include: cusparse.h"],
+      "official_reference": "https://docs.nvidia.com/cuda/cusparse/index.html",
+      "public_positive": {"repository": "starpu-runtime/starpu", "commit": "df18cbfe534fa8dae32356541f18e69ea37360e7", "path": "include/starpu_cusparse.h", "signal": "cusparse.h"},
+      "negative_profile": "cpp_exact",
+      "collision_notes": [],
+      "enrichment": {"rollup_to": null, "operators": "not_evaluated"},
+      "blockers": []
+    },
+    "cusparselt": {
+      "scope_revision": "confirmed-only-2026-07-29",
+      "status": "enabled",
+      "bands": {"confirmed": "evaluated", "bundled": "not_evaluated", "targeted": "not_evaluated"},
+      "discovery_anchors": ["cusparseLt.h"],
+      "qualifying_signals": ["own-source exact include: cusparseLt.h"],
+      "official_reference": "https://docs.nvidia.com/cuda/cusparselt/index.html",
+      "public_positive": {"repository": "cupy/cupy", "commit": "aa5c264bf84b239b79e329abf43e5b2dbaf82cdf", "path": "cupy_backends/cupy_cusparselt.h", "signal": "cusparseLt.h"},
+      "negative_profile": "cpp_exact",
+      "collision_notes": ["Bundled/package evidence remains framework-transitive or generated; broad cusparseLt build-name discovery was operationally unbounded and is not sufficient for targeted classification."],
+      "enrichment": {"rollup_to": "cusparse", "operators": "not_evaluated"},
+      "blockers": []
+    },
+    "cutensor": {
+      "status": "enabled",
+      "bands": {"confirmed": "evaluated", "bundled": "not_evaluated", "targeted": "evaluated"},
+      "discovery_anchors": ["cutensor.h", "cutensorMg.h", "cutensor"],
+      "qualifying_signals": ["own-source exact include: cutensor.h", "own-source exact include: cutensorMg.h"],
+      "official_reference": "https://docs.nvidia.com/cuda/cutensor/latest/index.html",
+      "public_positive": {"repository": "spcl/dace", "commit": "ed36f5413097dfb2f0ac7550d19aab44abb51e3d", "path": "dace/runtime/include/dace/dace_cutensor.h", "signal": "cutensor.h"},
+      "negative_profile": "cpp_exact",
+      "collision_notes": ["A project-local wrapper occurrence alone is insufficient unless the wrapper includes the external SDK header.", "The certified aarnphm/aarnphm.github.io broad blob is excluded as a discovery anchor because every match is CUtensorMap, the unrelated CUDA Driver TMA descriptor API. The exclusion is blob/path scoped, so any future independent cuTENSOR observation still nominates the repository."],
+      "discovery_observation_exclusions": [{"repository": "aarnphm/aarnphm.github.io", "source": "github-code-search", "signal_id": "broad-00", "matched_path": "content/lectures/420/index.md", "matched_blob": "d9e1feb37ad1930e04e092c3dff19949c8cd684c"}],
+      "enrichment": {"rollup_to": null, "operators": "not_evaluated"},
+      "blockers": []
+    },
+    "cudss": {
+      "status": "enabled",
+      "bands": {"confirmed": "evaluated", "bundled": "not_evaluated", "targeted": "evaluated"},
+      "discovery_anchors": ["cudss.h", "cudss"],
+      "qualifying_signals": ["own-source exact include: cudss.h"],
+      "official_reference": "https://docs.nvidia.com/cuda/cudss/index.html",
+      "public_positive": {"repository": "cvxgrp/scs", "commit": "41efd34f7e83c682f41306328fa5404e87b4c315", "path": "linsys/cudss/direct/private.h", "signal": "cudss.h"},
+      "negative_profile": "cpp_exact",
+      "collision_notes": ["4shen/webshell is excluded for cuDSS only: all 48 certified broad matches are repeated PHP malware-corpus samples under dataset/, not authored cuDSS integration evidence."],
+      "repository_exclusions": ["4shen/webshell"],
+      "enrichment": {"rollup_to": null, "operators": "not_evaluated"},
+      "blockers": []
+    },
+    "amgx": {
+      "status": "enabled",
+      "bands": {"confirmed": "evaluated", "bundled": "not_evaluated", "targeted": "not_evaluated"},
+      "discovery_anchors": ["amgx_c.h", "amgx"],
+      "qualifying_signals": ["own-source exact include: amgx_c.h"],
+      "official_reference": "https://github.com/NVIDIA/AMGX/blob/main/include/amgx_c.h",
+      "public_positive": {"repository": "mfem/mfem", "commit": "9c17c781e165ff897035a26a0af7e23cd325da87", "path": "linalg/amgxsolver.hpp", "signal": "amgx_c.h"},
+      "negative_profile": "cpp_exact",
+      "collision_notes": ["FindAMGX.cmake and other build-only mentions remain discovery anchors."],
+      "enrichment": {"rollup_to": null, "operators": "not_evaluated"},
+      "blockers": []
+    },
+    "cuequivariance": {
+      "status": "enabled",
+      "bands": {"confirmed": "evaluated", "bundled": "evaluated", "targeted": "not_evaluated"},
+      "discovery_anchors": ["cuequivariance", "cuequivariance_torch", "cuequivariance_jax", "cuequivariance-torch", "cuequivariance-jax"],
+      "qualifying_signals": ["executable non-shadowed import: cuequivariance", "executable non-shadowed import: cuequivariance_torch", "executable non-shadowed import: cuequivariance_jax"],
+      "official_reference": "https://github.com/NVIDIA/cuEquivariance",
+      "public_positive": {"repository": "RosettaCommons/foundry", "commit": "d6c07df049840579a0a3c552cbf8572a0bbc02ae", "path": "src/foundry/__init__.py", "signal": "cuequivariance"},
+      "negative_profile": "python_import",
+      "collision_notes": [],
+      "enrichment": {"rollup_to": null, "operators": "not_evaluated"},
+      "blockers": []
+    },
+    "warp": {
+      "status": "enabled",
+      "bands": {"confirmed": "evaluated", "bundled": "evaluated", "targeted": "not_evaluated"},
+      "discovery_anchors": ["warp", "warp-lang"],
+      "qualifying_signals": ["executable non-shadowed import: warp, plus a reviewed Warp API anchor (for example wp.kernel, wp.func, wp.launch, wp.tid, wp.array, wp.vec3, wp.sim)"],
+      "official_reference": "https://nvidia.github.io/warp/",
+      "public_positive": {"repository": "Autodesk/XLB", "commit": "9470e54a8d7ccd68d8e5563ca7a573040841ea8c", "path": "xlb/operator/collision/bgk.py", "signal": "import warp as wp + wp.func/wp.kernel/wp.launch"},
+      "negative_profile": "python_import_api",
+      "collision_notes": ["A bare import of the unrelated PyPI warp namespace cannot qualify without a Warp API anchor."],
+      "enrichment": {"rollup_to": null, "operators": "not_evaluated"},
+      "blockers": []
+    },
+    "physicsnemo": {
+      "status": "enabled",
+      "bands": {"confirmed": "evaluated", "bundled": "evaluated", "targeted": "not_evaluated"},
+      "discovery_anchors": ["physicsnemo", "nvidia-physicsnemo"],
+      "qualifying_signals": ["executable non-shadowed import: physicsnemo"],
+      "official_reference": "https://docs.nvidia.com/physicsnemo/latest/",
+      "public_positive": {"repository": "openhackathons-org/End-to-End-AI-for-Science", "commit": "edf9d8ea0b7c3a9bcdf93b553c549ee3f7f821ad", "path": "workspace/python/source_code/darcy/darcy_FNO.py", "signal": "from physicsnemo"},
+      "negative_profile": "python_import",
+      "collision_notes": ["physicsnemo_curator is a different package and is not a PhysicsNeMo anchor by prefix alone."],
+      "enrichment": {"rollup_to": null, "operators": "not_evaluated"},
+      "blockers": []
+    },
+    "cudaq-qec": {
+      "status": "enabled",
+      "bands": {"confirmed": "evaluated", "bundled": "evaluated", "targeted": "not_evaluated"},
+      "discovery_anchors": ["cudaq_qec", "cudaq-qec"],
+      "qualifying_signals": ["executable non-shadowed import: cudaq_qec"],
+      "official_reference": "https://nvidia.github.io/cudaqx/components/qec/introduction.html",
+      "public_positive": {"repository": "Dies-Irae/BP-SF", "commit": "0417d33fc2ffb3b442d0397bb09954fc1c6c3938", "path": "benchmark.py", "signal": "import cudaq_qec"},
+      "negative_profile": "python_import",
+      "collision_notes": ["Commented lazy-import examples and QEC prose do not qualify."],
+      "enrichment": {"rollup_to": null, "operators": "not_evaluated"},
+      "blockers": []
+    },
+    "cudaq-solvers": {
+      "status": "enabled",
+      "bands": {"confirmed": "evaluated", "bundled": "evaluated", "targeted": "not_evaluated"},
+      "discovery_anchors": ["cudaq_solvers", "cudaq-solvers"],
+      "qualifying_signals": ["executable non-shadowed import: cudaq_solvers"],
+      "official_reference": "https://nvidia.github.io/cudaqx/components/solvers/introduction.html",
+      "public_positive": {"repository": "NERSC/SC25-quantum-tutorial", "commit": "14734cc17e2cdd048004465cb48d2f1803b21cf6", "path": "Hour2/GQE/gqe_simple.py", "signal": "from cudaq_solvers"},
+      "negative_profile": "python_import",
+      "collision_notes": [],
+      "enrichment": {"rollup_to": null, "operators": "not_evaluated"},
+      "blockers": []
+    },
+    "cudnn": {
+      "status": "enabled",
+      "bands": {"confirmed": "evaluated", "bundled": "not_evaluated", "targeted": "not_evaluated"},
+      "discovery_anchors": ["cudnn.h", "cudnn_frontend.h", "cudnn"],
+      "qualifying_signals": ["own-source exact include: cudnn.h", "own-source exact include: cudnn_frontend.h"],
+      "official_reference": "https://docs.nvidia.com/deeplearning/cudnn/latest/",
+      "public_positive": {"repository": "clab/dynet", "commit": "22b44958476731af4d1fdbc553626eca3a27e808", "path": "dynet/cuda.h", "signal": "cudnn.h"},
+      "negative_profile": "cpp_exact",
+      "collision_notes": ["Install docs and copied cuDNN headers remain non-qualifying."],
+      "enrichment": {"rollup_to": null, "operators": "not_evaluated"},
+      "blockers": []
+    },
+    "tensorrt": {
+      "status": "enabled",
+      "bands": {"confirmed": "evaluated", "bundled": "evaluated", "targeted": "evaluated"},
+      "discovery_anchors": ["tensorrt", "NvInfer.h", "NvInferRuntime.h"],
+      "qualifying_signals": ["executable non-shadowed import: tensorrt", "own-source exact include: NvInfer.h", "own-source exact include: NvInferRuntime.h"],
+      "official_reference": "https://docs.nvidia.com/deeplearning/tensorrt/latest/",
+      "public_positive": {"repository": "onnx/onnx-tensorrt", "commit": "7c51a63a719180eb5160c874c111746f3fb46a6b", "path": "OnnxAttrs.hpp", "signal": "NvInfer.h"},
+      "negative_profile": "dual_surface",
+      "collision_notes": ["Copied NvInfer definition trees are local SDK copies."],
+      "enrichment": {"rollup_to": null, "operators": "not_evaluated"},
+      "blockers": []
+    },
+    "tensorrt-llm": {
+      "status": "enabled",
+      "bands": {"confirmed": "evaluated", "bundled": "evaluated", "targeted": "not_evaluated"},
+      "discovery_anchors": ["tensorrt_llm", "tensorrt-llm"],
+      "qualifying_signals": ["executable non-shadowed import: tensorrt_llm"],
+      "official_reference": "https://github.com/NVIDIA/TensorRT-LLM",
+      "public_positive": {"repository": "nesaorg/nesa", "commit": "c48412c660a700ae54ff63c1e10db063d2b87889", "path": "demo/modules/tensorrt_llm.py", "signal": "tensorrt_llm"},
+      "negative_profile": "python_import",
+      "collision_notes": ["TensorRT-LLM installation prose is discovery-only."],
+      "enrichment": {"rollup_to": "tensorrt", "operators": "not_evaluated"},
+      "blockers": []
+    },
+    "cutlass": {
+      "status": "enabled",
+      "bands": {"confirmed": "evaluated", "bundled": "not_evaluated", "targeted": "not_evaluated"},
+      "discovery_anchors": ["cutlass/", "cutlass"],
+      "qualifying_signals": ["own-source include under prefix: cutlass/ with a real header suffix"],
+      "official_reference": "https://github.com/NVIDIA/cutlass/tree/main/include/cutlass",
+      "public_positive": {"repository": "SHI-Labs/NATTEN", "commit": "39375ea1d2f3b1bb284315fa5f79f6ecbebb6382", "path": "csrc/src/compute_delta.cu", "signal": "cutlass/"},
+      "negative_profile": "cpp_prefix",
+      "collision_notes": ["CUTLASS source/sample trees and copied implementations are excluded; host source outside such a root remains eligible."],
+      "enrichment": {"rollup_to": null, "operators": "not_evaluated"},
+      "blockers": []
+    },
+    "flashinfer": {
+      "status": "enabled",
+      "bands": {"confirmed": "evaluated", "bundled": "evaluated", "targeted": "not_evaluated"},
+      "discovery_anchors": ["flashinfer", "flashinfer-python"],
+      "qualifying_signals": ["executable non-shadowed import: flashinfer"],
+      "official_reference": "https://docs.flashinfer.ai/",
+      "public_positive": {"repository": "deepseek-ai/FlashMLA", "commit": "15f13e5030374295491c5ce31b02d7e63a7772c6", "path": "benchmark/bench_flash_mla.py", "signal": "flashinfer"},
+      "negative_profile": "python_import",
+      "collision_notes": ["Install scripts without an executable import are discovery-only."],
+      "enrichment": {"rollup_to": null, "operators": "not_evaluated"},
+      "blockers": []
+    },
+    "thrust": {
+      "status": "enabled",
+      "bands": {"confirmed": "evaluated", "bundled": "not_evaluated", "targeted": "not_evaluated"},
+      "discovery_anchors": ["thrust/", "thrust"],
+      "qualifying_signals": ["own-source include under prefix: thrust/ with a real header suffix"],
+      "official_reference": "https://nvidia.github.io/cccl/unstable/thrust/",
+      "public_positive": {"repository": "antonmks/Alenka", "commit": "0b5ed2ea6cd428fe8aa21d810f494848563c9bf4", "path": "main.cu", "signal": "thrust/"},
+      "negative_profile": "cpp_prefix",
+      "collision_notes": ["Attribution prose and copied Thrust/rocThrust trees do not qualify."],
+      "enrichment": {"rollup_to": null, "operators": "not_evaluated"},
+      "blockers": []
+    },
+    "cub": {
+      "status": "enabled",
+      "bands": {"confirmed": "evaluated", "bundled": "not_evaluated", "targeted": "not_evaluated"},
+      "discovery_anchors": ["cub/", "cub"],
+      "qualifying_signals": ["own-source include under prefix: cub/ with a real header suffix"],
+      "official_reference": "https://nvidia.github.io/cccl/unstable/cub/index.html",
+      "public_positive": {"repository": "k2-fsa/k2", "commit": "ec31d2c96e04665eadb276ebcfd436892f74b0aa", "path": "k2/csrc/cub.h", "signal": "cub/"},
+      "negative_profile": "cpp_prefix",
+      "collision_notes": ["Bare CUB prose and copied CCCL/CUB trees do not qualify."],
+      "enrichment": {"rollup_to": null, "operators": "not_evaluated"},
+      "blockers": []
+    },
+    "cudf": {
+      "status": "enabled",
+      "bands": {"confirmed": "evaluated", "bundled": "evaluated", "targeted": "not_evaluated"},
+      "discovery_anchors": ["cudf", "cudf-cu12", "cudf-cu13"],
+      "qualifying_signals": ["executable non-shadowed import: cudf"],
+      "official_reference": "https://docs.rapids.ai/api/cudf/stable/",
+      "public_positive": {"repository": "h2oai/db-benchmark", "commit": "c7421051af7530951d16b1505158371aebc0d2c1", "path": "cudf/join-cudf.py", "signal": "cudf"},
+      "negative_profile": "python_import",
+      "collision_notes": ["RAPIDS first-party source is excluded from external adoption."],
+      "enrichment": {"rollup_to": null, "operators": "not_evaluated"},
+      "blockers": []
+    },
+    "cuvs": {
+      "status": "enabled",
+      "bands": {"confirmed": "evaluated", "bundled": "evaluated", "targeted": "not_evaluated"},
+      "discovery_anchors": ["cuvs", "cuvs-cu12", "cuvs-cu13"],
+      "qualifying_signals": ["executable non-shadowed import: cuvs"],
+      "official_reference": "https://docs.rapids.ai/api/cuvs/stable/",
+      "public_positive": {"repository": "volcengine/OpenViking", "commit": "44a50180bf206eb983454797028b9c1251f8cde8", "path": "benchmark/cuvs/run_index_benchmark.py", "signal": "cuvs"},
+      "negative_profile": "python_import",
+      "collision_notes": [],
+      "enrichment": {"rollup_to": null, "operators": "not_evaluated"},
+      "blockers": []
+    },
+    "cuml": {
+      "status": "enabled",
+      "bands": {"confirmed": "evaluated", "bundled": "evaluated", "targeted": "not_evaluated"},
+      "discovery_anchors": ["cuml", "cuml-cu12", "cuml-cu13"],
+      "qualifying_signals": ["executable non-shadowed import: cuml"],
+      "official_reference": "https://docs.rapids.ai/api/cuml/stable/",
+      "public_positive": {"repository": "JXWANG-GRAPH/HSP-GKN", "commit": "1ba94517dff4ea11ee84a21fea217587389b5a24", "path": "cuML_svm.py", "signal": "cuml"},
+      "negative_profile": "python_import",
+      "collision_notes": ["Install checks and release-note mentions are discovery-only."],
+      "enrichment": {"rollup_to": null, "operators": "not_evaluated"},
+      "blockers": []
+    },
+    "cuopt": {
+      "status": "enabled",
+      "bands": {"confirmed": "evaluated", "bundled": "evaluated", "targeted": "not_evaluated"},
+      "discovery_anchors": ["cuopt", "cuopt-cu12", "cuopt-cu13"],
+      "qualifying_signals": ["executable non-shadowed import: cuopt"],
+      "official_reference": "https://docs.nvidia.com/cuopt/user-guide/latest/",
+      "public_positive": {"repository": "coin-or/pulp", "commit": "55936106ed1251e9c0641d0b09d6a034d46f348d", "path": "pulp/apis/cuopt.py", "signal": "cuopt"},
+      "negative_profile": "python_import",
+      "collision_notes": ["CVXPY's project-local cuopt module is a shadow and cannot prove the external package."],
+      "enrichment": {"rollup_to": null, "operators": "not_evaluated"},
+      "blockers": []
+    },
+    "cugraph": {
+      "status": "enabled",
+      "bands": {"confirmed": "evaluated", "bundled": "evaluated", "targeted": "not_evaluated"},
+      "discovery_anchors": ["cugraph", "cugraph-cu12", "cugraph-cu13"],
+      "qualifying_signals": ["executable non-shadowed import: cugraph"],
+      "official_reference": "https://docs.rapids.ai/api/cugraph/stable/",
+      "public_positive": {"repository": "pyg-team/pytorch_geometric", "commit": "003c3cd8a10520567ceaeda619f0315e30ec2f66", "path": "torch_geometric/utils/convert.py", "signal": "cugraph"},
+      "negative_profile": "python_import",
+      "collision_notes": [],
+      "enrichment": {"rollup_to": null, "operators": "not_evaluated"},
+      "blockers": []
+    },
+    "nemo-curator": {
+      "status": "enabled",
+      "bands": {"confirmed": "evaluated", "bundled": "evaluated", "targeted": "not_evaluated"},
+      "discovery_anchors": ["nemo_curator", "nemo-curator"],
+      "qualifying_signals": ["executable non-shadowed import: nemo_curator"],
+      "official_reference": "https://docs.nvidia.com/nemo/curator/latest/",
+      "public_positive": {"repository": "Sidharth1743/IndicPHI", "commit": "a768063454d1f042180b774c69063d84d22eb082", "path": "main/pipeline/nemo_curator_fuzzy.py", "signal": "nemo_curator"},
+      "negative_profile": "python_import",
+      "collision_notes": ["AI skill/reference files containing example imports are documentation and excluded.", "physicsnemo_curator is a distinct package."],
+      "enrichment": {"rollup_to": null, "operators": "not_evaluated"},
+      "blockers": []
+    },
+    "morpheus": {
+      "status": "enabled",
+      "bands": {"confirmed": "evaluated", "bundled": "not_evaluated", "targeted": "not_evaluated"},
+      "discovery_anchors": ["morpheus", "morpheus.pipeline", "morpheus.config", "morpheus.messages", "morpheus.stages"],
+      "qualifying_signals": ["executable non-shadowed import: morpheus, plus an import/reference under morpheus.config, morpheus.messages, morpheus.pipeline, or morpheus.stages"],
+      "official_reference": "https://docs.nvidia.com/morpheus/",
+      "public_positive": {"repository": "Fiddelis/morpheus-siem-lab", "commit": "e5c901025d2f2723113e96710d718cf8abb8babf", "path": "morpheus/main.py", "signal": "morpheus.pipeline"},
+      "negative_profile": "python_import_api",
+      "collision_notes": ["The generic Morpheus name collides with unrelated packages/products; a product API anchor is mandatory."],
+      "enrichment": {"rollup_to": null, "operators": "not_evaluated"},
+      "blockers": []
+    },
+    "nvcomp": {
+      "status": "enabled",
+      "bands": {"confirmed": "evaluated", "bundled": "evaluated", "targeted": "evaluated"},
+      "discovery_anchors": ["nvcomp.h", "nvcomp/", "nvcomp", "nvidia.nvcomp", "nvidia-nvcomp-cu12", "nvidia-nvcomp-cu13", "nvcomp::nvcomp"],
+      "qualifying_signals": ["own-source exact include: nvcomp.h", "own-source include under prefix: nvcomp/ with a real header suffix", "executable non-shadowed import: nvidia.nvcomp"],
+      "official_reference": "https://docs.nvidia.com/cuda/nvcomp/",
+      "public_positive": {"repository": "dmlc/xgboost", "commit": "c649cf1aab639c8ec4dd40c6aa997475073e7617", "path": "src/common/device_compression.cu", "signal": "nvcomp/snappy.h + nvcomp API calls"},
+      "additional_public_positives": [{"repository": "pytorch/rl", "commit": "f6bb8cc87a2da666fe42188a4d9697f8736f7775", "path": "examples/replay-buffers/compressed_replay_buffer.py", "signal": "import nvidia.nvcomp as nvcomp + nvcomp.Codec"}],
+      "negative_profile": "dual_surface",
+      "collision_notes": ["inikep/lzbench contains a copied nvCOMP distribution under misc/ and is a hard negative."],
+      "enrichment": {"rollup_to": null, "operators": "not_evaluated"},
+      "blockers": []
+    },
+    "gds": {
+      "status": "enabled",
+      "bands": {"confirmed": "evaluated", "bundled": "not_evaluated", "targeted": "evaluated"},
+      "discovery_anchors": ["cufile.h", "cufile"],
+      "qualifying_signals": ["own-source exact include: cufile.h"],
+      "official_reference": "https://docs.nvidia.com/gpudirect-storage/api-reference-guide/index.html",
+      "public_positive": {"repository": "axboe/fio", "commit": "c76c61b0fbe1b90a7886b8790805cf9903285074", "path": "engines/libcufile.c", "signal": "cufile.h"},
+      "negative_profile": "cpp_exact",
+      "collision_notes": ["Copied GDS samples/headers and first-party DALI shims do not qualify as external adoption."],
+      "enrichment": {"rollup_to": null, "operators": "not_evaluated"},
+      "blockers": []
+    },
+    "nvimagecodec": {
+      "status": "enabled",
+      "bands": {"confirmed": "evaluated", "bundled": "evaluated", "targeted": "not_evaluated"},
+      "discovery_anchors": ["nvidia.nvimgcodec", "nvidia-nvimgcodec-cu12", "nvidia-nvimgcodec-cu13"],
+      "qualifying_signals": ["executable non-shadowed import: nvidia.nvimgcodec"],
+      "official_reference": "https://docs.nvidia.com/cuda/nvimagecodec/",
+      "public_positive": {"repository": "OpenHUTB/hutb", "commit": "f3c961b4a4283c83955743d134402cf93a0ad15c", "path": "PythonAPI/examples/nvidia/nurec/nurec_integration.py", "signal": "nvidia.nvimgcodec"},
+      "negative_profile": "python_import",
+      "collision_notes": [],
+      "enrichment": {"rollup_to": null, "operators": "not_evaluated"},
+      "blockers": []
+    },
+    "cvcuda": {
+      "status": "enabled",
+      "bands": {"confirmed": "evaluated", "bundled": "evaluated", "targeted": "not_evaluated"},
+      "discovery_anchors": ["cvcuda", "cvcuda-cu12", "cvcuda-cu13"],
+      "qualifying_signals": ["executable non-shadowed import: cvcuda"],
+      "official_reference": "https://cvcuda.github.io/CV-CUDA/",
+      "public_positive": {"repository": "Tencent-Hunyuan/Hunyuan3D-1", "commit": "454284503670312d4e06f6251c9be2f9f6d0fae7", "path": "svrm/ldm/models/svrm.py", "signal": "import cvcuda"},
+      "negative_profile": "python_import",
+      "collision_notes": ["CVCUDA/CV-CUDA is the product source, not an external adopter."],
+      "enrichment": {"rollup_to": null, "operators": "not_evaluated"},
+      "blockers": []
+    },
+    "cucim": {
+      "status": "enabled",
+      "bands": {"confirmed": "evaluated", "bundled": "evaluated", "targeted": "not_evaluated"},
+      "discovery_anchors": ["cucim", "cucim-cu12", "cucim-cu13"],
+      "qualifying_signals": ["executable non-shadowed import: cucim"],
+      "official_reference": "https://docs.rapids.ai/api/cucim/stable/",
+      "public_positive": {"repository": "slideflow/slideflow", "commit": "7f5a40bdb09d1316536366fa855498741bde0fa5", "path": "slideflow/_backend.py", "signal": "cucim"},
+      "negative_profile": "python_import",
+      "collision_notes": ["Optimization skill/reference prose is excluded."],
+      "enrichment": {"rollup_to": null, "operators": "not_evaluated"},
+      "blockers": []
+    },
+    "npp": {
+      "status": "enabled",
+      "bands": {"confirmed": "evaluated", "bundled": "not_evaluated", "targeted": "evaluated"},
+      "discovery_anchors": ["npp.h", "nppc.h", "nppi.h", "npps.h", "npp"],
+      "qualifying_signals": ["own-source exact include: npp.h", "own-source exact include: nppc.h", "own-source exact include: nppi.h", "own-source exact include: npps.h"],
+      "official_reference": "https://docs.nvidia.com/cuda/npp/introduction.html",
+      "public_positive": {"repository": "isl-org/Open3D", "commit": "ae18f6d9a549998ecd4a5b4423a32d66d9f7fc50", "path": "cpp/open3d/t/geometry/kernel/NPPImage.cpp", "signal": "npp.h + nppi API calls"},
+      "negative_profile": "cpp_exact",
+      "collision_notes": ["Copied NPP header definitions are local SDK copies."],
+      "enrichment": {"rollup_to": null, "operators": "not_evaluated"},
+      "blockers": []
+    },
+    "video-codec-sdk": {
+      "status": "enabled",
+      "bands": {"confirmed": "evaluated", "bundled": "not_evaluated", "targeted": "not_evaluated"},
+      "discovery_anchors": ["nvEncodeAPI.h", "nvcuvid.h", "cuviddec.h", "nvEncodeAPI"],
+      "qualifying_signals": ["own-source exact include: nvEncodeAPI.h", "own-source exact include: nvcuvid.h", "own-source exact include: cuviddec.h"],
+      "official_reference": "https://docs.nvidia.com/video-technologies/video-codec-sdk/",
+      "public_positive": {"repository": "opencv/opencv_contrib", "commit": "a8e9acd62cabd30419dba83007f2ac0d07de5e2c", "path": "modules/cudacodec/src/precomp.hpp", "signal": "nvEncodeAPI.h"},
+      "negative_profile": "cpp_exact",
+      "collision_notes": ["OBS/FFmpeg-style redistributed nvEncodeAPI.h definitions do not qualify by themselves; host code including the external header does."],
+      "enrichment": {"rollup_to": null, "operators": "not_evaluated"},
+      "blockers": []
+    },
+    "optical-flow-sdk": {
+      "status": "enabled",
+      "bands": {"confirmed": "evaluated", "bundled": "not_evaluated", "targeted": "not_evaluated"},
+      "discovery_anchors": ["nvofapi.h", "nvOpticalFlowCuda.h", "nvOpticalFlowD3D11.h", "nvOpticalFlowD3D12.h", "nvOpticalFlowVulkan.h", "NvOFAPICreateInstance"],
+      "qualifying_signals": ["own-source exact include: nvofapi.h", "own-source exact include: nvOpticalFlowCuda.h", "own-source exact include: nvOpticalFlowD3D11.h", "own-source exact include: nvOpticalFlowD3D12.h", "own-source exact include: nvOpticalFlowVulkan.h"],
+      "official_reference": "https://docs.nvidia.com/video-technologies/optical-flow-sdk/nvofa-programming-guide/index.html",
+      "public_positive": {"repository": "opencv/opencv_contrib", "commit": "a8e9acd62cabd30419dba83007f2ac0d07de5e2c", "path": "modules/cudaoptflow/src/nvidiaOpticalFlow.cpp", "signal": "nvOpticalFlowCuda.h + NvOFAPICreateInstanceCuda"},
+      "negative_profile": "cpp_exact",
+      "collision_notes": ["Patch files and copied Optical Flow interface header definitions do not qualify.", "The legacy nvofapi.h signal is retained for historical SDK consumers; current interface-specific headers are now explicit."],
+      "enrichment": {"rollup_to": null, "operators": "not_evaluated"},
+      "blockers": []
+    },
+    "nccl": {
+      "status": "enabled",
+      "bands": {"confirmed": "evaluated", "bundled": "not_evaluated", "targeted": "not_evaluated"},
+      "discovery_anchors": ["nccl.h", "nccl"],
+      "qualifying_signals": ["own-source exact include: nccl.h"],
+      "official_reference": "https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/",
+      "public_positive": {"repository": "ParRes/Kernels", "commit": "25051e46e54cd9dad33af1cdfbe66484131a603a", "path": "Cxx11/prk_nccl.h", "signal": "nccl.h"},
+      "negative_profile": "cpp_exact",
+      "collision_notes": ["NCCL source distributions, locally modified forks, and fake SDK fixtures are not independent adoption."],
+      "enrichment": {"rollup_to": null, "operators": "not_evaluated"},
+      "blockers": []
+    },
+    "nixl": {
+      "status": "enabled",
+      "bands": {"confirmed": "evaluated", "bundled": "evaluated", "targeted": "not_evaluated"},
+      "discovery_anchors": ["nixl", "nixl.h"],
+      "qualifying_signals": ["executable non-shadowed import: nixl", "own-source exact include: nixl.h"],
+      "official_reference": "https://github.com/ai-dynamo/nixl",
+      "public_positive": {"repository": "vllm-project/vllm", "commit": "30217b0e809ef045b3b4aa7c011d6c6d2b0b0362", "path": "vllm/v1/kv_offload/tiering/obj/manager.py", "signal": "nixl"},
+      "negative_profile": "dual_surface",
+      "collision_notes": ["ROCm/RIXL installs and includes its own nixl.h compatibility header; local-header resolution rejects it."],
+      "enrichment": {"rollup_to": null, "operators": "not_evaluated"},
+      "blockers": []
+    }
+  }
+}

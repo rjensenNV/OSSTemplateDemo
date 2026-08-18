@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Library — CUDA-X Developer Intelligence</title>
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#183b12">
+<link rel="stylesheet" href="css/style.css?v=20260810a">
+</head>
+<body>
+<div class="wrap">
+  <div class="crumbs"><a href="index.html">← All libraries</a></div>
+  <header class="top">
+    <h1 id="lib-name">…</h1>
+    <div class="meta" id="lib-meta"></div>
+  </header>
+
+  <div class="section-h">Adoption velocity</div>
+  <div class="velocity-sub muted">Growth in new repo integrations and research usage vs prior period.</div>
+  <div class="takeaways" id="takeaways"></div>
+
+  <!-- View toggle: GitHub adoption vs. research-paper citations -->
+  <div class="view-tabs" id="view-tabs">
+    <button class="tab-btn active" data-view="adoption">GitHub adoption</button>
+    <button class="tab-btn" data-view="citations">Research usage</button>
+  </div>
+
+  <!-- ===== Adoption view ===== -->
+  <div id="view-adoption">
+    <div class="section-h">Adoption over time <span class="lib-counts" id="lib-counts"></span></div>
+    <div id="chart"></div>
+
+    <!-- Component sub-libraries (parent page only, e.g. NVPL) -->
+    <div class="section-h" id="components-h" style="display:none">Components
+      <span class="muted" style="font-weight:400;font-size:13px">— adoption by component</span></div>
+    <div class="components-grid" id="components" style="display:none"></div>
+
+    <div class="section-h">Adopting repositories
+      <span class="dl" id="dl-controls">Download:
+        <a href="#" id="dl-csv" class="dl-btn">CSV</a>
+        <a href="#" id="dl-json" class="dl-btn">JSON</a>
+      </span>
+    </div>
+    <div class="controls">
+      <input type="search" id="search" placeholder="Search repos…">
+      <select id="klass">
+        <option value="all">All types</option>
+        <option value="confirmed">Integration only</option>
+        <option value="bundled">Bundled only</option>
+        <option value="targeted">Targeted only</option>
+      </select>
+    </div>
+    <table id="repos">
+      <thead><tr>
+        <th data-k="full_name">Repository</th>
+        <th data-k="type">Type</th>
+        <th data-k="stars" class="num">★</th>
+        <th data-k="forks" class="num">⑂</th>
+        <th data-k="language">Lang</th>
+        <th data-k="first_integration">Adopted&nbsp;↗</th>
+        <th data-k="operators">Operators</th>
+        <th data-k="ai">AI co-authors</th>
+      </tr></thead>
+      <tbody></tbody>
+    </table>
+    <div class="empty" id="empty" style="display:none"></div>
+    <div class="muted" id="repo-part-status" style="margin:10px 0"></div>
+    <button type="button" class="dl-btn" id="repo-more" style="display:none">Load more repositories</button>
+
+    <div class="caveats" id="caveats"></div>
+  </div>
+
+  <!-- ===== Research citations view ===== -->
+  <div id="view-citations" style="display:none">
+    <div class="section-h">Research usage over time <span class="lib-counts" id="cit-counts"></span></div>
+    <div class="muted" id="cit-quality"></div>
+    <div id="cit-chart"></div>
+
+    <div class="section-h">Papers
+      <span class="dl" id="cit-dl-controls">Download:
+        <a href="#" id="cit-dl-csv" class="dl-btn">CSV</a>
+        <a href="#" id="cit-dl-json" class="dl-btn">JSON</a>
+      </span>
+    </div>
+    <div class="controls">
+      <input type="search" id="cit-search" placeholder="Search papers…">
+      <select id="cit-filter">
+        <option value="all">All papers</option>
+        <option value="code">With code repo only</option>
+      </select>
+    </div>
+    <table id="papers">
+      <thead><tr>
+        <th data-k="title">Paper</th>
+        <th data-k="publication_date" class="num">Published</th>
+        <th data-k="venue">Venue</th>
+        <th data-k="cited_by" class="num">Cited&nbsp;by</th>
+        <th data-k="repo">Code</th>
+      </tr></thead>
+      <tbody></tbody>
+    </table>
+    <div class="empty" id="cit-empty" style="display:none"></div>
+
+    <div class="caveats" id="cit-caveats"></div>
+  </div>
+</div>
+
+<!-- Download customization dialog -->
+<div class="modal-overlay" id="dl-modal" style="display:none">
+  <div class="modal">
+    <div class="modal-h">Download — <span id="dl-lib"></span> GitHub adoption</div>
+    <div class="modal-row"><span class="modal-label">Format</span>
+      <label><input type="radio" name="dlfmt" value="csv" checked> CSV</label>
+      <label><input type="radio" name="dlfmt" value="json"> JSON</label>
+    </div>
+    <div class="modal-row"><span class="modal-label">Timeframe</span>
+      <input type="date" id="dl-from"> <span class="muted">to</span> <input type="date" id="dl-to">
+    </div>
+    <div class="modal-row" style="align-items:flex-start"><span class="modal-label">Columns</span>
+      <div id="dl-cols" class="dl-cols"></div>
+    </div>
+    <div class="modal-actions">
+      <a href="#" id="dl-cancel" class="dl-btn ghost">Cancel</a>
+      <a href="#" id="dl-go" class="dl-btn">Download</a>
+    </div>
+  </div>
+</div>
+
+<!-- Research-citations download dialog (mirrors the integrations one) -->
+<div class="modal-overlay" id="cit-dl-modal" style="display:none">
+  <div class="modal">
+    <div class="modal-h">Download — <span id="cit-dl-lib"></span> research usage</div>
+    <div class="modal-row"><span class="modal-label">Format</span>
+      <label><input type="radio" name="citdlfmt" value="csv" checked> CSV</label>
+      <label><input type="radio" name="citdlfmt" value="json"> JSON</label>
+    </div>
+    <div class="modal-row"><span class="modal-label">Published</span>
+      <input type="date" id="cit-dl-from"> <span class="muted">to</span> <input type="date" id="cit-dl-to">
+    </div>
+    <div class="modal-row" style="align-items:flex-start"><span class="modal-label">Columns</span>
+      <div id="cit-dl-cols" class="dl-cols"></div>
+    </div>
+    <div class="modal-actions">
+      <a href="#" id="cit-dl-cancel" class="dl-btn ghost">Cancel</a>
+      <a href="#" id="cit-dl-go" class="dl-btn">Download</a>
+    </div>
+  </div>
+</div>
+
+<script src="vendor/echarts.min.js"></script>
+<script src="js/common.js?v=20260810a"></script>
+<script src="js/data-v2.js?v=20260803b"></script>
+<script src="js/library.js?v=20260804c"></script>
+</body>
+</html>

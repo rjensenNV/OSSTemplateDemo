@@ -1,0 +1,85 @@
+name: Report a bug
+description: Report reproducible behavior that appears to be incorrect.
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for helping improve CUDA-X Developer Intelligence.
+
+        The maintainer provides an initial response within seven calendar days. Resolution remains best effort.
+
+        Do not disclose security vulnerabilities here. Follow `SECURITY.md` to report them privately.
+
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+      description: Identify the affected release or commit.
+      placeholder: "For example: v0.1.0-preview or abc1234"
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Include the relevant OS, architecture, Python, Git, browser, and Node.js versions. Redact secrets and private data.
+      placeholder: |
+        OS and architecture:
+        Python:
+        Git:
+        Browser or Node.js:
+        Other relevant tools:
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: Provide the smallest code, configuration, or public data that reproduces the problem and the exact commands to run.
+      placeholder: |
+        Minimal reproducer:
+        Required setup:
+        Exact commands:
+        1.
+        2.
+        3.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: Explain what you expected to happen.
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: Explain what happened instead. Include relevant logs after removing sensitive information.
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: Additional context
+      description: Add regression details, workarounds, related issues, or anything else that helps diagnose the problem.
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Submission checks
+      options:
+        - label: I searched existing issues for the same problem.
+          required: true
+        - label: I removed credentials, private links, and sensitive data from this report.
+          required: true
+        - label: I did not run a production collection merely to reproduce this issue.
+          required: true

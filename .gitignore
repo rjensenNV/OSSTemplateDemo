@@ -1,0 +1,24 @@
+__pycache__/
+*.pyc
+.DS_Store
+.obsidian/
+/tmp/
+.state/
+scanned_ledger.json
+.playwright-cli/
+*.log
+web/data
+# Generated adoption, citation, checkpoint, and dashboard artifacts are local-only.
+data/
+
+# stray workflow scratch scripts
+*.workflow.js
+
+# local onboarding scratch
+cert_groundtruth.py
+cert_groundtruth.log
+onboard_dryrun.log
+onboard_run.log
+
+# bounded collector smoke-test output
+smoke-output.json

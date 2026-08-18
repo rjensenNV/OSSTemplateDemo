@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CUDA-X Developer Intelligence</title>
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#183b12">
+<link rel="stylesheet" href="css/style.css?v=20260810a">
+</head>
+<body>
+<div class="wrap">
+  <header class="top brand">
+    <img class="brand-logo" src="logo.png?v=20260715b" alt="">
+    <div class="brand-text">
+      <h1><span class="accent">CUDA-X</span> Developer Intelligence</h1>
+      <div class="meta" id="meta">Loading…</div>
+    </div>
+  </header>
+
+  <div class="controls">
+    <input type="search" id="search" placeholder="Search libraries…">
+    <select id="sort">
+      <option value="adopters_desc">Integrations: high → low</option>
+      <option value="adopters_asc">Integrations: low → high</option>
+      <option value="alpha">Alphabetical (A → Z)</option>
+      <option value="delta_desc">New in the last 7 days</option>
+      <option value="trending_desc">Trending (last 90 days)</option>
+    </select>
+    <label><input type="checkbox" id="onlynew"> Only with new activity</label>
+    <button type="button" id="show-exports">Repository exports</button>
+  </div>
+  <div class="muted" id="export-links" hidden></div>
+
+  <div class="grid" id="grid"></div>
+</div>
+<script src="js/common.js?v=20260810a"></script>
+<script src="js/data-v2.js?v=20260803"></script>
+<script src="js/home.js?v=20260804c"></script>
+</body>
+</html>
