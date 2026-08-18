@@ -1,6 +1,6 @@
 """Focused durable scan-attempt ledger tests.
 
-Run: python3.12 -m unittest -v test_req14_scan_attempts.py
+Run: python3.12 -m unittest -v tests.test_req14_scan_attempts
 """
 
 from __future__ import annotations

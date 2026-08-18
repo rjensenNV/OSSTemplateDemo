@@ -9,9 +9,9 @@ from pathlib import Path
 from collector.publish_v2 import build_v2_tree
 from collector.run import _detection_hash
 from collector.validate_refresh import _count_anomalies, component_counts
-from test_req14_publication import fixture as publication_fixture
+from tests.test_req14_publication import fixture as publication_fixture
 
-ROOT = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OLD_HASH = "75c876497a5e544c"
 NEW_HASH = _detection_hash()
 

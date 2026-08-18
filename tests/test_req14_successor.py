@@ -77,7 +77,7 @@ from collector.successor import (
 )
 
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[1]
 PREDECESSOR = "predecessor"
 NOW = datetime.datetime(2026, 7, 29, tzinfo=datetime.timezone.utc)
 

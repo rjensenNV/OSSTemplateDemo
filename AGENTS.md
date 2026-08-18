@@ -29,6 +29,7 @@ Read these files before changing behavior:
 | `collector/req14_evidence_contract.json` | Reviewed detector evidence boundary |
 | `ops/req14_detector_fingerprints.json` | Approval-time detector lock |
 | `data/` | Ignored local generated artifacts; never add to source commits |
+| `tests/` | Offline Python and JavaScript regression suites |
 | `web/` | Static V2-only dashboard |
 
 Use `rg` and targeted reads. Never add generated repository, citation,

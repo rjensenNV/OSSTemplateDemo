@@ -21,7 +21,7 @@ from collector.scan import direct_result_from_files, scan_repo
 from collector.triage import triage_tree
 
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[1]
 FINGERPRINT_LOCK = ROOT / "ops/req14_detector_fingerprints.json"
 BUNDLED_IDS = {
     "cuequivariance",

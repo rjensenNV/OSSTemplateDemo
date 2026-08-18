@@ -31,7 +31,7 @@ from collector.repo_cache import RepoCache
 from collector.scan import _date_first_use
 from collector.scanner_v2 import ScanTask, scan_many
 from collector.state import StateDB, canonical_json
-from test_req14_pipeline import (
+from tests.test_req14_pipeline import (
     FakeCitationPipeline,
     FakeDiscovery,
     FakeMetadata,

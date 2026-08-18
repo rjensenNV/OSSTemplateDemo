@@ -34,7 +34,7 @@ from collector.state import StateDB
 from collector.validate_v2 import compare_v1_v2, validate_v2
 
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[1]
 
 
 def fixture():

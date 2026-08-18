@@ -8,7 +8,7 @@ from unittest import mock
 
 from collector import citation_extract, citations, publish_v2, run, scan
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[1]
 
 
 def _entry(name, libraries, stars=0):

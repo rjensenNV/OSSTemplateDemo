@@ -995,18 +995,18 @@ Before the first collection:
 ./refresh.sh --check
 python3.12 -m collector.cli plan --json
 python3.12 -m compileall -q collector
-python3.12 test_req14_state.py
-python3.12 test_req14_discovery.py
-python3.12 test_req14_transports.py
-python3.12 test_req14_scanner.py
-python3.12 test_req14_citations.py
-python3.12 test_req14_publication.py
-python3.12 test_req14_portfolio.py
-python3.12 test_req14_pipeline.py
-python3.12 test_req14_successor.py
-python3.12 test_req14_safety.py
-python3.12 test_req14_acceptance.py
-python3.12 test_req14_evidence_contract.py
+python3.12 tests/test_req14_state.py
+python3.12 tests/test_req14_discovery.py
+python3.12 tests/test_req14_transports.py
+python3.12 tests/test_req14_scanner.py
+python3.12 tests/test_req14_citations.py
+python3.12 tests/test_req14_publication.py
+python3.12 tests/test_req14_portfolio.py
+python3.12 tests/test_req14_pipeline.py
+python3.12 tests/test_req14_successor.py
+python3.12 tests/test_req14_safety.py
+python3.12 tests/test_req14_acceptance.py
+python3.12 tests/test_req14_evidence_contract.py
 python3.12 ops/smoke_scan.py --repos EXPmaster/nqs --repo-timeout 60
 ```
 

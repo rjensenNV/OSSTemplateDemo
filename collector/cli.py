@@ -1107,8 +1107,8 @@ def _compare(args):
         "-m",
         "unittest",
         "-v",
-        "test_req14_scanner.py",
-        "test_req14_portfolio.py",
+        "tests.test_req14_scanner",
+        "tests.test_req14_portfolio",
     ]
     # Scanner fixtures deliberately exercise process-group cancellation. Keep
     # that test tree out of the interactive shell/CI wrapper's process group

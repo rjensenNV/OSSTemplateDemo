@@ -1,6 +1,6 @@
 """REQ-14 Phase 1 state, recovery, checkpoint and fingerprint tests.
 
-Run: python3 test_req14_state.py
+Run: python3 tests/test_req14_state.py
 """
 
 import json
@@ -10,7 +10,7 @@ import sys
 import tempfile
 from pathlib import Path
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from collector import fingerprints
 from collector.catalog import CATALOG_EVENTS

@@ -57,7 +57,7 @@ publish tracked data.
 
 ## Automated companion checks
 
-`test_req14_frontend.js` locks the request-isolation, paging, sorting, filter
+`tests/test_req14_frontend.js` locks the request-isolation, paging, sorting, filter
 denominator, and complete-export behavior in a fast deterministic fixture. It
 is a companion regression suite, not a substitute for the real-browser pass
 recorded above.

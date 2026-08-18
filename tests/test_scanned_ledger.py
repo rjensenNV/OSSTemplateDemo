@@ -1,13 +1,13 @@
 """Validation for the scanned-ledger (collector/ledger.py). Pure logic — no network, no token,
 no clones. Proves the load-bearing guarantees before this goes near the live collector.
 
-Run:  python3 test_scanned_ledger.py
+Run:  python3 tests/test_scanned_ledger.py
 """
 import os
 import sys
 import tempfile
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from collector import ledger
 
 P = 0
