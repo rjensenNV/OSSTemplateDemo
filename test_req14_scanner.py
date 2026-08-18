@@ -2042,6 +2042,8 @@ class TriageTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as td:
             repo = Path(td)
             _git(repo, "init", "-q", "-b", "main")
+            _git(repo, "config", "user.name", "REQ14 Test")
+            _git(repo, "config", "user.email", "req14@example.invalid")
             for relative, body in signature_bodies.items():
                 path = repo / "ORB_SLAM2" / relative
                 path.parent.mkdir(parents=True, exist_ok=True)
@@ -2076,6 +2078,8 @@ class TriageTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as td:
             repo = Path(td)
             _git(repo, "init", "-q", "-b", "main")
+            _git(repo, "config", "user.name", "REQ14 Test")
+            _git(repo, "config", "user.email", "req14@example.invalid")
             for relative, body in signature_bodies.items():
                 path = repo / relative
                 path.parent.mkdir(parents=True, exist_ok=True)
@@ -2325,6 +2329,8 @@ class TriageTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as td:
             repo = Path(td)
             _git(repo, "init", "-q", "-b", "main")
+            _git(repo, "config", "user.name", "REQ14 Test")
+            _git(repo, "config", "user.email", "req14@example.invalid")
             (repo / "analysis.ipynb").write_text(notebook)
             _git(repo, "add", ".")
             _git(repo, "commit", "-q", "-m", "BOM notebook")
